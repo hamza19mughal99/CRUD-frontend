@@ -13,7 +13,7 @@ const CreateData = () => {
         axios.post('/register', getFormData)
             .then((res) => {
                 console.log(res.data)
-                console.log('successfully created!!')
+                navigate('/')
             }).catch((err) => {
                 console.log(err)
         })

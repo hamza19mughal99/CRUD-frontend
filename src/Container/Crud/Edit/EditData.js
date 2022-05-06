@@ -1,10 +1,24 @@
-import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
-import {Form} from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import axios from 'axios';
+import { Form } from "react-bootstrap";
 
 const EditData = () => {
     const navigate = useNavigate();
     const [getEditFormData, setEditGetFormData] = useState({})
+    const [getUserData, setGetUserData] = useState({})
+
+    const id = useParams();
+
+    useEffect(() => {
+        axios.get(`/all-users/${id.id}`)
+            .then((res) => {
+                setGetUserData(res.data)
+
+            }).catch((err) => {
+                console.log(err.message)
+            })
+    },[])
 
     const SubmitHandler = (e) => {
         e.preventDefault();
@@ -31,19 +45,19 @@ const EditData = () => {
                 <Form onSubmit={SubmitHandler}>
 
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="text" value={'hamza@gmail.com'} name={'email'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getUserData.email} name={'email'} onChange={onChangeHandler} />
 
                     <Form.Label>UserName</Form.Label>
-                    <Form.Control type="text" value={'hamza mughal'} name={'username'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getUserData.username} name={'username'} onChange={onChangeHandler} />
 
                     <Form.Label>Job</Form.Label>
-                    <Form.Control type="text" value={'developer'} name={'job'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getUserData.job} name={'job'} onChange={onChangeHandler} />
 
                     <Form.Label>Phone Number</Form.Label>
-                    <Form.Control type="text" value={'03492496204'} name={'number'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getUserData.number} name={'number'} onChange={onChangeHandler} />
 
                     <div className={'text-center my-4'}>
-                        <button type={'submit'} className={'create_btn'} >Create</button>
+                        <button type={'submit'} className={'create_btn'} >Edit</button>
                     </div>
 
                 </Form>
