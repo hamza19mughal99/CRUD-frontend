@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Crud from "./Container/Crud/Crud";
+import Create from "./Container/Crud/Create/CreateData";
+import Edit from "./Container/Crud/Edit/EditData";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <Router>
+        <Routes>
+          <Route path={'/'} element={ <Crud /> } />
+          <Route path={'/create-data'} element={ <Create /> } />
+          <Route path={'/edit-data'} element={ <Edit /> } />
+        </Routes>
+      </Router>
+  )
 }
-
 export default App;
