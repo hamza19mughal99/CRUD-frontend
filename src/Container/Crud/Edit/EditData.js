@@ -5,15 +5,19 @@ import { Form } from "react-bootstrap";
 
 const EditData = () => {
     const navigate = useNavigate();
-    const [getEditFormData, setEditGetFormData] = useState({})
-    const [getUserData, setGetUserData] = useState({})
+    const [getEditFormData, setEditGetFormData] = useState({
+        email: '',
+        username: '',
+        job: '',
+        number: ''
+    })
 
     const id = useParams();
 
     useEffect(() => {
         axios.get(`/all-users/${id.id}`)
             .then((res) => {
-                setGetUserData(res.data)
+                setEditGetFormData(res.data)
 
             }).catch((err) => {
                 console.log(err.message)
@@ -22,10 +26,17 @@ const EditData = () => {
 
     const SubmitHandler = (e) => {
         e.preventDefault();
-        console.log(getEditFormData)
+        axios.patch(`/all-users/${id.id}`, getEditFormData)
+            .then((res) => {
+                navigate('/')
+                console.log('successfully updated')
+            }).catch((err) => {
+                console.log(err.message)
+        })
     }
 
     const onChangeHandler = (e) => {
+        console.log(e.target.value)
         setEditGetFormData({
             ...getEditFormData,
             [e.target.name]: e.target.value
@@ -45,16 +56,16 @@ const EditData = () => {
                 <Form onSubmit={SubmitHandler}>
 
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="text" value={getUserData.email} name={'email'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getEditFormData.email} name={'email'} onChange={onChangeHandler} />
 
                     <Form.Label>UserName</Form.Label>
-                    <Form.Control type="text" value={getUserData.username} name={'username'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getEditFormData.username}  name={'username'} onChange={onChangeHandler} />
 
                     <Form.Label>Job</Form.Label>
-                    <Form.Control type="text" value={getUserData.job} name={'job'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getEditFormData.job} name={'job'} onChange={onChangeHandler} />
 
                     <Form.Label>Phone Number</Form.Label>
-                    <Form.Control type="text" value={getUserData.number} name={'number'} onChange={onChangeHandler} />
+                    <Form.Control type="text" value={getEditFormData.number} name={'number'} onChange={onChangeHandler} />
 
                     <div className={'text-center my-4'}>
                         <button type={'submit'} className={'create_btn'} >Edit</button>

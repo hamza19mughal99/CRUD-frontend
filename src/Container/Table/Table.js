@@ -12,7 +12,6 @@ const Table = () => {
     const [getOneUserData, setGetOneUserData] = useState(null)
 
     const viewData = (id) => {
-        console.log(id)
 
         axios.get(`/all-users/${id}`)
             .then((res) => {
@@ -27,12 +26,20 @@ const Table = () => {
     useEffect(() => {
         axios.get('/all-users')
             .then((res) => {
-                console.log(res.data)
                 setGetUserData(res.data)
             }).catch((err) => {
                 console.log(err.message)
             })
-    }, [])
+    }, [getOneUserData])
+
+    const deleteData = (id) => {
+        axios.delete(`all-users/${id}`)
+            .then((res) => {
+                window.location.reload();
+            }).catch((err) => {
+                console.log(err.message)
+        })
+    }
 
     const modal = (
         <Modal show={show} onHide={() => setShow(false)}>
@@ -63,6 +70,11 @@ const Table = () => {
     )
 
 
+    if(getUserData && getUserData.length === 0){
+        data = (
+            <p className={'text-center'}>No Data Found</p>
+        )
+    }
     if (getUserData && getUserData.length > 0) {
         data = (
             <table className="table table-striped w-75">
@@ -91,7 +103,7 @@ const Table = () => {
                                         <div>
                                             <button className={'action_btn view'} onClick={() => viewData(d._id)}> <AiFillEye /> </button>
                                             <button className={'action_btn edit'} onClick={() => navigate(`/edit-data/${d._id}`)}> <FiEdit /> </button>
-                                            <button className={'action_btn del'}> <AiOutlineDelete /> </button>
+                                            <button className={'action_btn del'} onClick={() => deleteData(d._id)}><AiOutlineDelete /> </button>
                                         </div>
                                     </td>
                                 </tr>
