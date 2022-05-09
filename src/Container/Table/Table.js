@@ -10,9 +10,9 @@ const Table = () => {
     const [show, setShow] = useState(false);
     const [getUserData, setGetUserData] = useState(null)
     const [getOneUserData, setGetOneUserData] = useState(null)
+    const [searchEmail, setSearchEmail] = useState(null)
 
     const viewData = (id) => {
-
         axios.get(`/all-users/${id}`)
             .then((res) => {
                 setGetOneUserData(res.data)
@@ -41,6 +41,17 @@ const Table = () => {
         })
     }
 
+    const SearchHandler = (e) => {
+        e.preventDefault();
+        
+        axios.get(`/all-users?keyword=${searchEmail}`)
+            .then((res) => {
+                setGetUserData(res.data)
+            }).catch((err) => {
+                console.log(err.message)
+        })
+    }
+
     const modal = (
         <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
@@ -57,8 +68,6 @@ const Table = () => {
                         </div>
                         : null
                 }
-
-
             </Modal.Body>
         </Modal>
     )
@@ -68,7 +77,6 @@ const Table = () => {
             <Spinner animation="border" />
         </div>
     )
-
 
     if(getUserData && getUserData.length === 0){
         data = (
@@ -116,10 +124,19 @@ const Table = () => {
     }
 
     return (
-        <div className={'text-center d-flex justify-content-center mt-5'}>
-            {modal}
-            {data}
-        </div>
+        <React.Fragment>
+            <form onSubmit={SearchHandler}>
+            <div className={'input_div'}>
+                <input placeholder={'Enter Email Address'} type="email" onChange={(e) => setSearchEmail(e.target.value)}/>
+                <button className={'create_btn'}> Search </button>
+            </div>
+            </form>
+            <div className={'text-center d-flex justify-content-center mt-5'}>
+                {modal}
+                {data}
+            </div>
+        </React.Fragment>
+
     );
 };
 

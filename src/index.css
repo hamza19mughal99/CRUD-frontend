@@ -34,3 +34,15 @@
     width: 80%;
     margin: auto;
 }
+
+.input_div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.input_div input{
+    width: 50%;
+    margin-right: 20px;
+}
